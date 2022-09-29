@@ -28,11 +28,18 @@
 
 name: SonarCloud analysis
 
+#on:
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
+#  workflow_dispatch:
+  
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "branch-*" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "branch-*" ]
   workflow_dispatch:
 
 permissions:
