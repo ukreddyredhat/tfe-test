@@ -1,43 +1,67 @@
-resource "google_service_account" "default" {
-  account_id   = "service_account_id"
-  display_name = "Service Account"
+terraform {
+  required_version = ">= 0.11.1"
 }
 
-resource "google_compute_instance" "default" {
-  name         = "test"
-  machine_type = "e2-medium"
-  zone         = "us-central1-a"
+variable "gcp_credentials" {
+  description = "GCP credentials needed by google provider"
+}
 
-  tags = ["foo", "bar"]
+variable "gcp_project" {
+  description = "GCP project name"
+}
+
+variable "gcp_region" {
+  description = "GCP region, e.g. us-east1"
+  default = "europe-west3"
+}
+
+variable "gcp_zone" {
+  description = "GCP zone, e.g. us-east1-a"
+  default = "europe-west3-a"
+}
+
+variable "machine_type" {
+  description = "GCP machine type"
+  default = "n1-standard-1"
+}
+
+variable "instance_name" {
+  description = "GCP instance name"
+  default = "demo"
+}
+
+variable "image" {
+  description = "image to build instance from"
+  default = "debian-cloud/debian-9"
+}
+
+provider "google" {
+  credentials = "${var.gcp_credentials}"
+  project     = "${var.gcp_project}"
+  region      = "${var.gcp_region}"
+}
+
+resource "google_compute_instance" "demo" {
+  name         = "${var.instance_name}"
+  machine_type = "${var.machine_type}"
+  zone         = "${var.gcp_zone}"
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image = "${var.image}"
     }
-  }
-
-  // Local SSD disk
-  scratch_disk {
-    interface = "SCSI"
   }
 
   network_interface {
     network = "default"
 
     access_config {
-      // Ephemeral public IP
+      // Ephemeral IP
     }
   }
 
-  metadata = {
-    foo = "bar"
-  }
+}
 
-  metadata_startup_script = "echo hi > /test.txt"
-
-  service_account {
-    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
-    email  = google_service_account.default.email
-    scopes = ["cloud-platform"]
-  }
+output "external_ip"{
+  value = "${google_compute_instance.demo.network_interface.0.access_config.0.nat_ip}"
 }
