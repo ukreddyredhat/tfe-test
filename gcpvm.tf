@@ -33,7 +33,7 @@ variable "instance_name" {
 
 variable "image" {
   description = "image to build instance from"
-  default = "debian-cloud/debian-9"
+  default = "debian-cloud/debian-11"
 }
 
 provider "google" {
