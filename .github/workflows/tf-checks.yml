@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 2
     steps:
       - name: Git Checkout
-        uses: jsoref/actions-download-artifact@e8e28081281db717c387052cf471367873957e46
+        uses: actions/checkout@v3
       - name: Terraform setup
         uses: hashicorp/setup-terraform@v2
         with:
