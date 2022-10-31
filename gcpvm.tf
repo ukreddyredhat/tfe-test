@@ -8,6 +8,7 @@ variable "gcp_credentials" {
 
 variable "gcp_project" {
   description = "GCP project name"
+  default = "fiery-melody-367206"
 }
 
 variable "gcp_region" {
@@ -22,12 +23,12 @@ variable "gcp_zone" {
 
 variable "machine_type" {
   description = "GCP machine type"
-  default = "n1-standard-1"
+  default = "e2-micro"
 }
 
 variable "instance_name" {
   description = "GCP instance name"
-  default = "demo"
+  default = "demo-1"
 }
 
 variable "image" {
