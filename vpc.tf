@@ -10,8 +10,8 @@ variable "region" {
 }
 
 provider "google" {
-  project = var.project_id
-  region  = var.region
+  project = "fiery-melody-367206"
+  region  = us-central1
 }
 
 # VPC
